@@ -19,6 +19,7 @@ router.get("/:code", async (req, res) => {
     });
   }
   const r = await PI.read(f[0]);
+  r.filter((ee) => ee.length != 0);
   f[0].Url = "http://codal.ir" + f[0].Url + "&sheetId=1";
   return res.json({
     codal: f[0],

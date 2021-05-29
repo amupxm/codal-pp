@@ -38,7 +38,7 @@ class Puppeteer {
 
           re = re.filter((e) => e != "");
 
-          return re;
+          return re.length >= 3 ? re : [];
         });
     });
     await page.close();

@@ -9,7 +9,10 @@ class Puppeteer {
     this.browser = browser;
   }
   public static async getInstance(c: CodalObject): Promise<Puppeteer> {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+      timeout: 10000,
+    });
 
     if (!Puppeteer.instance) {
       Puppeteer.instance = new Puppeteer(c, browser);

@@ -2,27 +2,27 @@ import puppeteer from "puppeteer";
 import { CodalInstance, CodalObject } from "./codal";
 class Puppeteer {
   private static instance: Puppeteer;
-  private codal: CodalObject;
+  public codal!: CodalObject;
   private browser: puppeteer.Browser;
-  private constructor(c: CodalObject, browser: puppeteer.Browser) {
-    this.codal = c;
+  private constructor(browser: puppeteer.Browser) {
     this.browser = browser;
   }
-  public static async getInstance(c: CodalObject): Promise<Puppeteer> {
+  public static async getInstance(): Promise<Puppeteer> {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox"],
       timeout: 10000,
     });
 
     if (!Puppeteer.instance) {
-      Puppeteer.instance = new Puppeteer(c, browser);
+      Puppeteer.instance = new Puppeteer(browser);
     }
     return Puppeteer.instance;
   }
   private generateURL(): string {
-    return "http://codal.ir/" + this.codal.Url + "&sheetId=1";
+    return "http://codal.ir" + this.codal.Url + "&sheetId=1";
   }
-  async read() {
+  async read(c: CodalObject) {
+    this.codal = c;
     console.log(12);
     const page = await this.browser.newPage();
     await page.goto(this.generateURL());

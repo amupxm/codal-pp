@@ -4,8 +4,12 @@ import Puppeteer from "./model/Puppeteer";
 import express, { Router } from "express";
 import e from "express";
 const router = express();
+let PI: Puppeteer | null;
 
 router.get("/:code", async (req, res) => {
+  if (!PI) {
+    PI = await Puppeteer.getInstance();
+  }
   const symbolFa = req.params.code;
   const codalInstance = await new Codal(symbolFa).fetchData();
   const f = codalInstance.Letters.filter((e) => e.LetterCode == "ن-۱۰");
@@ -14,10 +18,11 @@ router.get("/:code", async (req, res) => {
       ok: false,
     });
   }
-  const puppeteerInstance = await (await Puppeteer.getInstance(f[0])).read();
-  res.json({
+  const r = await PI.read(f[0]);
+  f[0].Url = "http://codal.ir" + f[0].Url + "&sheetId=1";
+  return res.json({
     codal: f[0],
-    results: puppeteerInstance,
+    results: r,
   });
 });
 

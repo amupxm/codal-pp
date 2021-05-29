@@ -32,8 +32,8 @@ class Puppeteer {
       return tds
         .map((td: any) => String(td.innerText))
         .map((e: string) => {
+          e.replace(/\t/gi, "");
           e.trim();
-          e.replace("\t", "");
           let re = e.split("\n");
 
           return re;

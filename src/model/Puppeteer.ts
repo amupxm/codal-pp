@@ -32,7 +32,9 @@ class Puppeteer {
       return tds
         .map((td: any) => String(td.innerText))
         .map((e: string) => {
-          return e.split("\n\t");
+          e.trim();
+          e.replace("\n", "");
+          return e.split("\t");
         });
     });
     await page.close();
